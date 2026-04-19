@@ -1,0 +1,22 @@
+{
+  "name": "@smart-hotel/contracts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "audit:slither": "slither . --filter-paths \"node_modules|test|cache|artifacts\" --exclude timestamp",
+    "build": "npm run compile",
+    "clean": "hardhat clean",
+    "compile": "hardhat compile",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "lint": "eslint hardhat.config.js scripts test",
+    "test": "hardhat test"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "hardhat": "^2.24.1"
+  }
+}

@@ -1,0 +1,8 @@
+[project]
+name = "smart-hotel-python-ledger"
+version = "1.0.0"
+description = "Off-chain hotel inventory ledger with blockchain-style block chaining."
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
