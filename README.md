@@ -1,53 +1,115 @@
-# Smart-Hotel-Mangement-Expense-Tracker
-# Smart Hotel Management Expense Tracker
+# Smart Hotel Hybrid dApp
 
-The Smart Hotel Management Expense Tracker is a comprehensive system designed to efficiently manage hotel expenses, track inventory, and provide detailed reporting. This project aims to streamline hotel operations by providing a user-friendly interface for managing daily expenses, monitoring stock levels, and generating expense reports.
+This repository expands the legacy Flask hotel expense tracker into a full-stack hybrid dApp with a Python blockchain-style core, a Solidity mirror contract, a Node.js translator API, and a React dashboard.
 
----
+## Repository Structure
 
-## **Table of Contents**
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Installation](#installation)
-  - [Step 1: Clone the Repository](#step-1-clone-the-repository)
-  - [Step 2: Set up a Virtual Environment](#step-2-set-up-a-virtual-environment)
-  - [Step 3: Install Dependencies](#step-3-install-dependencies)
-  - [Step 4: Set up the Database](#step-4-set-up-the-database)
-  - [Step 5: Run the Application](#step-5-run-the-application)
-- [How It Works](#how-it-works)
-- [Troubleshooting](#troubleshooting)
-- [Acknowledgments](#acknowledgments)
+```text
+.
+|-- .github/
+|   `-- workflows/
+|       `-- ci.yml
+|-- backend/
+|   `-- src/
+|-- blockchain-core/
+|   |-- app/
+|   `-- tests/
+|-- contracts/
+|   |-- contracts/
+|   |-- scripts/
+|   |-- test/
+|   `-- hardhat.config.js
+|-- docs/
+|   |-- architecture.md
+|   `-- implementation-guide.md
+|-- frontend/
+|   |-- src/
+|   `-- vite.config.js
+|-- legacy/
+|   `-- original-flask-app/
+|-- shared/
+|   `-- src/
+|-- eslint.config.mjs
+`-- package.json
+```
 
----
+## Architecture
 
-## Overview
-The Smart Hotel Management Expense Tracker helps hotel owners and managers track daily expenses, monitor inventory levels, and generate detailed reports on overall hotel operations. It automates tasks like expense recording and inventory management, making hotel management more efficient and organized.
+- `blockchain-core`: Off-chain business truth implemented as a FastAPI microservice with SQLite state and hash-linked blocks.
+- `backend`: The Node.js/Express translator that calls the Python microservice first, then mirrors validated actions to the Solidity contract through Ethers.js.
+- `contracts`: Hardhat workspace with `HotelLedger.sol`, deployment scripts, tests, and Slither auditing support.
+- `frontend`: React dashboard for restocks, dish registration, dish sales, and ledger visibility.
+- `shared`: Shared action names and contract ABI metadata for the JavaScript layers.
 
-## Features
-- Easy entry of hotel expenses, including purchases, utilities, and staff salaries.
-- Track inventory, including stock levels for supplies such as food, beverages, toiletries, etc.
-- Generate expense reports to evaluate financial performance.
-- Monitor the hotel’s cash flow and identify any discrepancies or areas for improvement.
-- User-friendly interface for managing data and generating reports.
+## Step-by-Step Implementation Guide
 
-## **Technologies Used**
-- **Python**: Programming language.
-- **Flask**: Web framework to deploy the system as a web application.
-- **SQLite**: Database for storing hotel expense and inventory data.
-- **HTML/CSS/JavaScript**: Frontend for creating a user interface.
-- **Bootstrap**: To design responsive pages.
-- **Jinja2**: For dynamic HTML rendering.
-- **Flask-SQLAlchemy**: ORM for database interaction.
+The repository now follows the implementation order you requested:
 
----
+1. Structure the code under `blockchain-core`, `contracts`, `backend`, `frontend`, and `.github/workflows`.
+2. Run the Python business logic as a local microservice in `blockchain-core`.
+3. Let `backend` translate UI commands into HTTP requests to the Python service and then mirror the accepted state into the Solidity contract.
+4. Use `frontend` as the operator dashboard for transactions and ledger inspection.
+5. Enforce quality gates with Prettier, ESLint, Husky, tests, GitHub Actions, and Slither.
 
-## Installation
-To run this project, follow these steps to set up the environment:
+The detailed workflow is documented in [docs/implementation-guide.md](C:/Users/patel/Downloads/dapp/docs/implementation-guide.md).
 
-### **Step 1: Clone the Repository**
+## Quick Start
+
+1. Install JavaScript dependencies:
+
+   ```bash
+   npm install
+   ```
+
+2. Install Python dependencies:
+
+   ```bash
+   python -m pip install -r blockchain-core/requirements.txt
+   ```
+
+3. Start the Python ledger microservice:
+
+   ```bash
+   python -m uvicorn app.main:app --reload --app-dir blockchain-core
+   ```
+
+4. Start the translator backend:
+
+   ```bash
+   npm run start -w backend
+   ```
+
+5. Start the React dashboard:
+
+   ```bash
+   npm run dev -w frontend
+   ```
+
+6. Compile or deploy contracts:
+
+   ```bash
+   npm run compile -w contracts
+   npm run deploy:sepolia -w contracts
+   ```
+
+7. Run quality checks:
+
+   ```bash
+   npm run quality:check
+   npm run audit:slither
+   ```
+
+## Git and Husky
+
+Husky is scaffolded in `.husky/` and will run `npm run quality:check` before commits once Git is initialized.
+
 ```bash
-git clone https://github.com/yourusername/smart-hotel-expense-tracker.git
-cd smart-hotel-expense-tracker
+git init
+npm run prepare
+```
 
- 
+Git could not be initialized in the current machine session because `git` is not installed or not available on the system path.
+
+## Legacy Reference
+
+The original upstream project remains preserved in `legacy/original-flask-app` for side-by-side comparison with the hybrid dApp implementation.

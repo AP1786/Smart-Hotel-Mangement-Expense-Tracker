@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+artifacts
+cache
+blockchain-core/data
+legacy
+legacy/original-flask-app/venv
